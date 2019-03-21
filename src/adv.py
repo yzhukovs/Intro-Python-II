@@ -37,15 +37,15 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
-key = Item("magic key", "opens the magic door to exit")
-wand = Item("magic wand", "magical magic")
+key = Item("key", "opens the magic door to exit")
+wand = Item("wand", "magical magic")
 items = [key, wand]
 item_names = [item.name for item in items]
 
 
 room['outside'].items.append(key)
 
-player = Player("name", room['outside'])
+player = Player("Yvette", room['outside'])
 #
 # Main
 #
@@ -79,7 +79,7 @@ valid_directions = ['n', 's', 'e', 'w']
 
 while True:
     cmd = input("-> ")
-    cmd_split = cmd.split(' ')
+    cmd_split = cmd.split()
     if len(cmd_split) == 1:
         if cmd in valid_directions:
             player.moving(cmd)
@@ -92,20 +92,22 @@ while True:
             print("I did not understand that command.")
 
     if len(cmd_split) == 2:
-        if cmd[0] == 'take' or cmd[0] == 'put':
+        if cmd_split[0] == 'take':
             for item in player.current_room.items:
-                if item.name == cmd[1]:
-                    player.remove_item(item)
+                if cmd_split[1] == item.name:
+                    player.current_room.remove_item(item)
+                    player.add_item(item)
                     item.taking()
                 else:
                     print("The item is not available in the room")
-        elif cmd[0] == "drop":
-            for item in player.current_room.items:
-                if item.name == cmd[1]:
-                    player.add_item(item)
+        elif cmd_split[0] == "drop":
+            for item in player.items:
+                if cmd_split[1] == item.name:
+                    player.remove_item(item)
+                    player.current_room.add_item(item)
                     item.dropping()
             else:
-                print("\nNot a valid input. Try again.")
+                print("Not a valid input. Try again.")
 
 
 

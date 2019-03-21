@@ -4,11 +4,14 @@ class Item:
         self.name = name
         self.description = description
 
-def __repr__(self):
-        return ": ".join((self.name, self.description))
+    def __repr__(self):
+            return f"{self.name}, {self.description}"
 
-def taking(self):
-        print("You picked " + self.name)    
+    def __str__(self):
+            return f"{self.name}, {self.description}"
 
-def dropping(self):
-        print("You dropped " + self.name)
+    def taking(self):
+            print("You picked " + self.name)
+
+    def dropping(self):
+            print("You dropped " + self.name)

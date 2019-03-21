@@ -48,17 +48,12 @@ class Room:
         print(item_names)
 
     def add_item(self, item):
-        item_to_find_name = item
-        for item in [i.lower() for i in self.items]:
-            if item.name == item_to_find_name.lower():
-                self.items.append(item)
-                break       
+        self.items.append(item)
 
-    def remove_item(self, item):
-        item_to_find_name = item
-        for item in [i.lower() for i in self.items]:
-            if item.name == item_to_find_name.lower():
-                self.items.remove(item)
+    def remove_item(self, item_to_remove):
+        for item_in_room in self.items:
+            if item_in_room.name.lower() == item_to_remove.name.lower():
+                self.items.remove(item_to_remove)
                 break        
 
 #class Room(Empty_Room):
