@@ -2,6 +2,7 @@ from player import Player
 from room import Room
 from item import Item
 import textwrap
+import sys
 
 # Declare all the rooms
 
@@ -40,12 +41,13 @@ items = {
     'key': Item("magic key", "opens the magic door to exit")
 }
 
+player = Player("name", room['outside'])
 #
 # Main
 #
 
 # Make a new player object that is currently in the 'outside' room.
-player = Player(room['outside'])
+#player = Player(room['outside'])
 
 # Write a loop that:
 #
@@ -60,3 +62,60 @@ player = Player(room['outside'])
 
 print(textwrap.dedent(f"You are currently in room:{player.current_room.name}"))
 print(textwrap.fill(player.current_room.description))
+print(" ")
+print(textwrap.dedent('''
+        Where would you like to go?
+        Type [go north] To go North [go east] To go East [go south] To go South [w] To go West
+        Also you can 'take <ItemName>' or 'put <ItemName>' in your inventory
+        and 'drop <ItemName>' to remove item from your inventory example: "take coins" or "drop sword".
+        Press 'i' to show inventory of items or press 'q' to quit
+    '''))
+
+while True:
+    cmd = input(">").lower()
+    if len(cmd) > 1:
+        cmd = input("\nInvalid Entry")
+    if len(cmd) == 1:
+        if cmd == "q":
+            print("You left the game, goodbye!")
+            break
+    if cmd == "i":
+        print(player.items)          
+    elif cmd == "w":
+        player.moving(cmd)
+        print(textwrap.dedent(f"You are currently in room: {player.current_room.name}"))
+    elif cmd == "n":
+        player.moving(cmd)
+        print(textwrap.dedent(f"You are currently in room: {player.current_room.name}"))   
+    elif cmd == "e":
+        player.moving(cmd)
+        print(textwrap.dedent(f"You are currently in room: {player.current_room.name}")) 
+    elif cmd == "s":
+        player.moving(cmd)
+        print(textwrap.dedent(f"You are currently in room: {player.current_room.name}")) 
+    else:
+        long_cmd = cmd.split()
+        if len(long_cmd) == 2:
+            if long_cmd[0] == 'put' or long_cmd[0] == 'take':
+                for item in player.current_room.items:
+                    if long_cmd[1] == item.name:
+                        player.current_room.remove_item(item)
+                        player.remove_item(item)
+                        item.taking()
+            else:
+                print("The item is not available in the room")
+            if long_cmd[0] == 'drop':
+                for item in player.items:
+                    if long_cmd[1] == item.name:
+                        player.remove_item(item)
+                        player.current_room.add_item(item)
+                        item.dropping()
+                    
+        else:
+            print("Error please enter a valid command")
+
+
+
+
+
+
